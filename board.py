@@ -21,6 +21,7 @@ class Board(GameObject):
     self.height = height
     self.thick = thick
     self.direction = ""
+    self.gameover = False
     self.k_up = False
     self.k_down = False
     self.k_left = False
@@ -64,10 +65,12 @@ class Board(GameObject):
       self.board_data = self.setPosition(self.board_data)
   
   def update(self):
-    if not self.direction == "":
-      self.board_data = self.changeBoardData(self.board_data)
-    for i in range(len(self.children)):
-      self.children[i].setInformation(self.children[i].x, self.children[i].y, self.board_data[i // 4][i % 4])
+    self.gameover = self.checkGameover(self.board_data)
+    if not self.gameover:
+      if not self.direction == "":
+        self.board_data = self.changeBoardData(self.board_data)
+      for i in range(len(self.children)):
+        self.children[i].setInformation(self.children[i].x, self.children[i].y, self.board_data[i // 4][i % 4])
 
   def draw(self, screen):
     pygame.draw.rect(screen, GREEN, [self.x, self.y, self.width * self.col, self.height * self.row])
@@ -78,7 +81,7 @@ class Board(GameObject):
         pygame.draw.rect(screen, WHITE, [rx + self.thick, ry + self.thick, self.width - self.thick * 2, self.height - self.thick * 2])
 
   def setPosition(self, board_data):
-    next_board_data = board_data
+    next_board_data = [[board_data[j][i] for i in range(self.row)] for j in range(self.col)]
     rn = random.randint(0, self.row - 1)
     while not 0 in next_board_data[rn]:
       rn = random.randint(0, self.row - 1)
@@ -147,3 +150,15 @@ class Board(GameObject):
     if not board_data == next_board_data:
       next_board_data = self.setPosition(next_board_data)
     return next_board_data
+  
+  def checkGameover(self, board_data):
+    next_board_data = [[board_data[j][i] for i in range(self.row)] for j in range(self.col)]
+    fill = 0
+    for i in range(self.row):
+      for j in range(self.col):
+        if not next_board_data[i][j] == 0:
+          fill += 1
+    if fill == 16:
+      return True
+    else:
+      return False

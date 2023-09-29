@@ -28,19 +28,28 @@ class Score(Text):
     super().drawText(screen, "SCORE:" + str(self.score), self.x, self.y, self.color, self.size)
 
 class Maxscore(Text):
-  def __init__(self, x, y, color, size, score):
+  def __init__(self, x, y, color, size, score, board):
     super().__init__(x, y, "MaxScore")
     self.score = score
     self.max_score = self.getMaxScore()
     self.color = color
     self.size = size
+    self.board = board
+    self.timer = 0
 
   def update(self):
-    if self.score.score > self.max_score:
+    if not self.board.gameover:
+      self.timer = 0
+      if self.score.score > self.max_score:
+        self.max_score = self.score.score
+    else:
       self.max_score = self.score.score
+      if self.getMaxScore() < self.max_score:
+        self.timer += 1
 
   def draw(self, screen):
-    super().drawText(screen, "MAX_SCORE:" + str(self.max_score), self.x, self.y, self.color, self.size)
+    if self.timer == 0 or self.timer % 30 >= 15:
+      super().drawText(screen, "MAX_SCORE:" + str(self.max_score), self.x, self.y, self.color, self.size)
   
   def getMaxScore(self):
     with open('txt/BestScore.txt', 'r') as file:

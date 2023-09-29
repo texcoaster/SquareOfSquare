@@ -31,7 +31,7 @@ def main():
   score = Score(SCREEN_WIDTH / 2, 50, (255, 255, 255), 80)
   text.children.append(score)
 
-  max_score = Maxscore(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 50, (255, 255, 255), 80, score)
+  max_score = Maxscore(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 50, (255, 255, 255), 80, score, board)
   text.children.append(max_score)
 
   for i in range(board.row):
