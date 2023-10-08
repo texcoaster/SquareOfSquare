@@ -93,64 +93,75 @@ class Board(GameObject):
 
   def changeBoardData(self, board_data):
     next_board_data = [[board_data[j][i] for i in range(self.row)] for j in range(self.col)]
-    isChange = False
     if self.direction == "UP":
-      for i in range(self.col):
-        isChange = False
-        for j in range(1, self.row):
-          if not next_board_data[j][i] == 0:
-            for l in range(j, 0, -1):
-              if next_board_data[l - 1][i] == 0:
-                next_board_data[l - 1][i] = next_board_data[l][i]
-                next_board_data[l][i] = 0
-              elif next_board_data[l - 1][i] == next_board_data[l][i] and not isChange:
-                next_board_data[l - 1][i] *= 2
-                next_board_data[l][i] = 0
-                isChange = True
+      self.checkUp(next_board_data)
     elif self.direction == "DOWN":
-      for i in range(self.col):
-        isChange = False
-        for j in range(self.row - 2, -1, -1):
-          if not next_board_data[j][i] == 0:
-            for l in range(j, self.row - 1, 1):
-              if next_board_data[l + 1][i] == 0:
-                next_board_data[l + 1][i] = next_board_data[l][i]
-                next_board_data[l][i] = 0
-              elif next_board_data[l + 1][i] == next_board_data[l][i] and not isChange:
-                next_board_data[l + 1][i] *= 2
-                next_board_data[l][i] = 0
-                isChange = True
+      self.checkDown(next_board_data)
     elif self.direction == "LEFT":
-      for i in range(self.row):
-        isChange = False
-        for j in range(1, self.col):
-          if not next_board_data[i][j] == 0:
-            for l in range(j, 0, -1):
-              if next_board_data[i][l - 1] == 0:
-                next_board_data[i][l - 1] = next_board_data[i][l]
-                next_board_data[i][l] = 0
-              elif next_board_data[i][l - 1] == next_board_data[i][l] and not isChange:
-                next_board_data[i][l - 1] *= 2
-                next_board_data[i][l] = 0
-                isChange = True
+      self.checkLeft(next_board_data)
     elif self.direction == "RIGHT":
-      for i in range(self.row):
-        isChange = False
-        for j in range(self.col - 2, -1, -1):
-          if not next_board_data[i][j] == 0:
-            for l in range(j, self.col - 1, 1):
-              if next_board_data[i][l + 1] == 0:
-                next_board_data[i][l + 1] = next_board_data[i][l]
-                next_board_data[i][l] = 0
-              elif next_board_data[i][l + 1] == next_board_data[i][l] and not isChange:
-                next_board_data[i][l + 1] *= 2
-                next_board_data[i][l] = 0
-                isChange = True
+      self.checkRight(next_board_data)
 
     if not board_data == next_board_data:
       next_board_data = self.setPosition(next_board_data)
     return next_board_data
+
+  def checkUp(self, next_board_data):
+    for i in range(self.col):
+      isChange = False
+      for j in range(1, self.row):
+        if not next_board_data[j][i] == 0:
+          for l in range(j, 0, -1):
+            if next_board_data[l - 1][i] == 0:
+              next_board_data[l - 1][i] = next_board_data[l][i]
+              next_board_data[l][i] = 0
+            elif next_board_data[l - 1][i] == next_board_data[l][i] and not isChange:
+              next_board_data[l - 1][i] *= 2
+              next_board_data[l][i] = 0
+              isChange = True
   
+  def checkDown(self, next_board_data):
+    for i in range(self.col):
+      isChange = False
+      for j in range(self.row - 2, -1, -1):
+        if not next_board_data[j][i] == 0:
+          for l in range(j, self.row - 1, 1):
+            if next_board_data[l + 1][i] == 0:
+              next_board_data[l + 1][i] = next_board_data[l][i]
+              next_board_data[l][i] = 0
+            elif next_board_data[l + 1][i] == next_board_data[l][i] and not isChange:
+              next_board_data[l + 1][i] *= 2
+              next_board_data[l][i] = 0
+              isChange = True
+  
+  def checkLeft(self, next_board_data):
+    for i in range(self.row):
+      isChange = False
+      for j in range(1, self.col):
+        if not next_board_data[i][j] == 0:
+          for l in range(j, 0, -1):
+            if next_board_data[i][l - 1] == 0:
+              next_board_data[i][l - 1] = next_board_data[i][l]
+              next_board_data[i][l] = 0
+            elif next_board_data[i][l - 1] == next_board_data[i][l] and not isChange:
+              next_board_data[i][l - 1] *= 2
+              next_board_data[i][l] = 0
+              isChange = True
+  
+  def checkRight(self, next_board_data):
+    for i in range(self.row):
+      isChange = False
+      for j in range(self.col - 2, -1, -1):
+        if not next_board_data[i][j] == 0:
+          for l in range(j, self.col - 1, 1):
+            if next_board_data[i][l + 1] == 0:
+              next_board_data[i][l + 1] = next_board_data[i][l]
+              next_board_data[i][l] = 0
+            elif next_board_data[i][l + 1] == next_board_data[i][l] and not isChange:
+              next_board_data[i][l + 1] *= 2
+              next_board_data[i][l] = 0
+              isChange = True
+
   def checkGameover(self, board_data):
     next_board_data = [[board_data[j][i] for i in range(self.row)] for j in range(self.col)]
     fill = 0
@@ -159,6 +170,20 @@ class Board(GameObject):
         if not next_board_data[i][j] == 0:
           fill += 1
     if fill == 16:
+      for i in range(self.row):
+        for j in range(self.col):
+          if not i == 0:
+            if next_board_data[i][j] == next_board_data[i - 1][j]:
+              return False
+          if not j == 0:
+            if next_board_data[i][j] == next_board_data[i][j - 1]:
+              return False
+          if not i == self.row - 1:
+            if next_board_data[i][j] == next_board_data[i + 1][j]:
+              return False
+          if not j == self.col - 1:
+            if next_board_data[i][j] == next_board_data[i][j + 1]:
+              return False
       return True
     else:
       return False
