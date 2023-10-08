@@ -38,12 +38,12 @@ class Maxscore(Text):
     self.timer = 0
 
   def update(self):
+    if self.score.score > self.max_score:
+      self.max_score = self.score.score
+      
     if not self.board.gameover:
       self.timer = 0
-      if self.score.score > self.max_score:
-        self.max_score = self.score.score
     else:
-      self.max_score = self.score.score
       if self.getMaxScore() < self.max_score:
         self.timer += 1
 

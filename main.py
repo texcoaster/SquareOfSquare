@@ -11,6 +11,8 @@ tmr = 0
 direction = ""
 reset = False
 
+gameover_image = pygame.image.load("images/dead.png")
+
 def main():
   global tmr, direction, reset
 
@@ -63,6 +65,8 @@ def main():
     score.score = sum([sum(data) for data in board.board_data])
     root.update()
     root.draw(screen)
+    if board.gameover:
+      screen.blit(gameover_image, [0, 0])
 
     pygame.display.update()
     clock.tick(30)
