@@ -36,13 +36,22 @@ class Maxscore(Text):
     self.size = size
     self.board = board
     self.timer = 0
+    self.sound = True
+    self.score_sound = pygame.mixer.Sound("sounds/score.wav")
 
   def update(self):
     if self.score.score > self.max_score:
       self.max_score = self.score.score
-      
+      if self.sound:
+        self.sound = False
+        self.score_sound.play()
+    elif self.score.score < self.max_score:
+      self.sound = True
+
     if not self.board.gameover:
       self.timer = 0
+      with open('txt/BestScore.txt', 'w') as file:
+        file.write(str(self.max_score))
     else:
       if self.getMaxScore() < self.max_score:
         self.timer += 1

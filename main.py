@@ -11,8 +11,6 @@ tmr = 0
 direction = ""
 reset = False
 
-gameover_image = pygame.image.load("images/dead.png")
-
 def main():
   global tmr, direction, reset
 
@@ -20,6 +18,10 @@ def main():
   pygame.display.set_caption("Square of Square (SOS)")
   screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   clock = pygame.time.Clock()
+
+  pygame.mixer.init()
+  gameover_sound = pygame.mixer.Sound("sounds/gameover.wav")
+  gameover_image = pygame.image.load("images/dead.png")
 
   root = GameObject(0, 0)
   GameObject.root = root
@@ -46,9 +48,9 @@ def main():
     tmr = tmr + 1
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
-        max_score = max_score.max_score
+        maxscore = max_score.max_score
         with open('txt/BestScore.txt', 'w') as file:
-          file.write(str(max_score))
+          file.write(str(maxscore))
         pygame.quit()
         sys.exit()
       if event.type == pygame.KEYDOWN:
@@ -67,6 +69,7 @@ def main():
     root.draw(screen)
     if board.gameover:
       screen.blit(gameover_image, [0, 0])
+      gameover_sound.play()
 
     pygame.display.update()
     clock.tick(30)

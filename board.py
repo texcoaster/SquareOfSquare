@@ -28,6 +28,7 @@ class Board(GameObject):
     self.k_right = False
     self.k_r = False
     self.board_data = self.setPosition(self.board_data)
+    self.woosh_sound = pygame.mixer.Sound("sounds/woosh.wav")
 
   def key_input(self, key):
     self.direction = ""
@@ -56,6 +57,7 @@ class Board(GameObject):
       self.k_r = False
     if key[pygame.K_r] and not self.k_r:
       self.k_r = True
+      pygame.mixer.stop()
       self.board_data = [
         [0, 0, 0, 0],
         [0, 0, 0, 0],
@@ -104,6 +106,7 @@ class Board(GameObject):
 
     if not board_data == next_board_data:
       next_board_data = self.setPosition(next_board_data)
+      self.woosh_sound.play()
     return next_board_data
 
   def checkUp(self, next_board_data):
